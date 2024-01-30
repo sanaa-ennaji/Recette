@@ -50,7 +50,7 @@
    
 			<article class="flex flex-col dark:bg-slate-500">
 				<a rel="noopener noreferrer" href="#" aria-label="Te nulla oportere reprimique his dolorum">
-					<img alt="" class="object-cover w-full h-52 dark:bg-gray-500" src="Captur.png">
+					<img alt="" class="object-cover w-full h-52 dark:bg-gray-500" src="pizza.jpg">
 				</a>
 				<div class="flex flex-col flex-1 p-6">
 					<a rel="noopener noreferrer" href="#" aria-label="Te nulla oportere reprimique his dolorum"></a>
