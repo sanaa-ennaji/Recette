@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('recepies', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->longText('ingridient');
-            $table->text('instructions');
-            $table->string('image_path')->nullable();
+            // $table->string('title');
+            // $table->longText('ingridient');
+            // $table->text('instructions');
+            // $table->string('image_path')->nullable();
+            // $table->foreignId('user_id')->constrained();
             $table->timestamps();
-
         });
     }
 

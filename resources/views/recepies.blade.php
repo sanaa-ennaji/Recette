@@ -15,10 +15,6 @@
 
 <body class="bg-gray-100">
 
-    <!-- navbar -->
-
-     <!-- navbar-end -->
-
 
 <!-- search bar -->
 <div class="relative mx-auto w-64 md:w-96 mt-5">
@@ -47,7 +43,7 @@
 
 		<div class="grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 lg:grid-cols-4">
 
-   
+
 			<article class="flex flex-col dark:bg-slate-500">
 				<a rel="noopener noreferrer" href="#" aria-label="Te nulla oportere reprimique his dolorum">
 					<img alt="" class="object-cover w-full h-52 dark:bg-gray-500" src="pizza.jpg">
@@ -63,4 +59,10 @@
 				</div>
 			</article>
 	</div>
+    </div>
 </section>
+
+
+
+
+
