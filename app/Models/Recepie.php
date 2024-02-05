@@ -9,11 +9,17 @@ class Recepie extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+        protected $fillable = [
         'title', 
         'ingridient',
-        'instructions',
-        'image_path',
-        'user_id'
-    ];
-}
+         'instructions',
+          'image_path',
+           'user_id'];
+
+           public function user (){
+            return $this->belongsTo(User::class , 'user_id');
+           }
+    }
+    
+    
+

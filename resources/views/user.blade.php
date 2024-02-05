@@ -18,31 +18,32 @@
             background-repeat: no-repeat;
           
         }
-        
+        .center{
+            margin-inline: 25rem;
+        }
          </style>
 </head>
 <body>
     @auth
     <p>welcome, dear user </p>
     <form action="/logout" method="POST">
-@csrf
-<button>log out</button>
+    @csrf
+    <button>log out</button>
     </form>
-   
-    <div class="container mx-auto mt-8">
+
+    <div  class="center" class="container mx-auto mt-8">
         <h1 class="text-2xl font-semibold mb-4">Create a Recipe</h1>
     
-        <form action="/create_recepie" method="POST" enctype="multipart/form-data">
+        <form  action="/create_recepie" method="POST" enctype="multipart/form-data" >
             @csrf
-    
-            <div class="mb-4">
+            <div class="mb-5">
                 <label for="title" class="block text-sm font-medium text-gray-600">Title</label>
                 <input type="text" name="title" id="title" class="mt-1 p-2 border rounded w-full"  required>
             </div>
     
             <div class="mb-4">
-                <label for="ingredients" class="block text-sm font-medium text-gray-600">Ingredients</label>
-                <textarea name="ingredients" id="ingredients" rows="4" class="mt-1 p-2 border rounded w-full" required></textarea>
+                <label for="ingridient" class="block text-sm font-medium text-gray-600">Ingredients</label>
+                <textarea name="ingridient" id="ingridient" rows="4" class="mt-1 p-2 border rounded w-full" required></textarea>
             </div>
     
             <div class="mb-4">
@@ -55,12 +56,51 @@
                 <input type="file" name="image_path" id="image" class="mt-1 p-2 border rounded w-full">
             </div>
     
-            <div class="mb-4">
+            <div class="mb-4">  
                 <button type="submit" class="bg-blue-500 text-white p-2 rounded">Submit Recipe</button>
             </div>
         </form>
-    </div>
+      </div>
 
+      <div class="bg-gray-100 p-6">
+    <div class="max-w-3xl mx-auto bg-white rounded-md overflow-hidden">
+      <h2 class="text-2xl font-semibold p-4 bg-gray-200">Recettes</h2>
+
+    <table class="min-w-full">
+      <thead>
+          <tr>
+            <th class="py-2 px-4 border-b">id</th>
+              <th class="py-2 px-4 border-b">Titre</th>
+              <th class="py-2 px-4 border-b">Ingrédients</th>
+              <th class="py-2 px-4 border-b">Instructions</th>
+              <th class="py-2 px-4 border-b">Image</th>
+              <th class="py-2 px-4 border-b">delete</th>
+              <th class="py-2 px-4 border-b">update</th>
+          </tr>
+      </thead>
+      <tbody>
+        @foreach($recepies as $recepie)
+        <tr>
+          <td class="py-2 px-4 border-b">{{ $recepie->id}}</td>
+            <td class="py-2 px-4 border-b">{{ $recepie->title }}</td>
+            <td class="py-2 px-4 border-b">{{ $recepie->ingridient }}</td>
+            <td class="py-2 px-4 border-b">{{ $recepie->instructions }}</td>
+            <td class="py-2 px-4 border-b">{{ $recepie->image_path }}</td>
+            {{-- <span>{{$recepie->user->name}}</span> --}}
+            <td class="py-2 px-4 border-b">  
+              <form action="/delete-recepie/{{$recepie->id}}" method="POST">
+                @csrf
+                @method('DELETE')
+              <button class="btn btn-primary">delete</button>
+            </form>
+          </td>
+            <td class="py-2 px-4 border-b"><a href="/edit-recepie/{{$recepie->id}}"><button class="btn btn-primary">update</button></a></td>
+          </tr>
+          @endforeach
+       </table>
+      </div>
+    </div>
+         
     @else
     <section >
         <div id="class" class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -86,8 +126,6 @@
                             <label for="pass" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
                             <input type="password"  name="logpassword" id="password" placeholder="********" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
                         </div>
-                      
-                        <!-- <input type="hidden" name="action" value="register"> -->
                         <button  id="btn" type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">log in </button>
                         <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                             Already have an account? <a href="/user" class="font-medium text-primary-600 hover:underline dark:text-primary-500">register here</a>
@@ -98,10 +136,7 @@
             </div>
         </div>
       </section>
-   
     @endauth
-
-
 <script>
 
 tailwind.config = {

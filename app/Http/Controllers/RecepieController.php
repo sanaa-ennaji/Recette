@@ -1,15 +1,19 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use App\Models\Recepie;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class RecepieController extends Controller
 {
     public function createrecepie(Request $request)
     {
+        // $data = $request->validate([])
         $validator = Validator::make($request->all(), [
             'title' => 'required',
             'ingridient' => 'required',
@@ -17,30 +21,85 @@ class RecepieController extends Controller
             'image_path' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+
+        $data = [
+            'title' => strip_tags($request->input('title')),
+            'ingridient' => strip_tags($request->input('ingridient')),
+            'instructions' => strip_tags($request->input('instructions')),
+            'user_id' => auth()->id(),
+        ];
+
+        if ($request->hasFile('image_path')) {
+            $file = $request->file('image_path');
+            $imageName = time() . '.' . $file->extension();
+            $file->storeAs('public/images', $imageName);
+            $data['image_path'] = $imageName;
         }
 
-        $data = $request->validate([
-            'title' => 'required',
-            'ingridient' => 'required',
-            'instructions' => 'required',
-            'image_path' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        $data['title'] = strip_tags($data['title']);
-        $data['ingridient'] = strip_tags($data['ingridient']);
-        $data['instructions'] = strip_tags($data['instructions']);
-        $data['user_id'] = auth()->id();
-
-        // Handle image upload
-        $data['image_path'] = $request->file('image_path')->store('public/images');
-        dd($data);
         Recepie::create($data);
-       
         return redirect('/user');
     }
+
+    public function showEdit(Recepie $recepie){
+        if (auth()->user()->id !== $recepie['user_id'] ){
+            return('/rece');
+         }
+            return   view('edit-recepie' , ['recepie' => $recepie]);
+         }
     
+
+    public function updatedRecepies(Recepie $recepie , Request $request){
+       if (auth()->user()->id !== $recepie['user_id'] ){
+       return('/user');
+    }
+
+     $data = $request->validate([
+        'title' => 'required',
+        'ingridient' => 'required',
+        'instructions' => 'required',
+        'image_path' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+     ]);
+     $data = [
+        'title' => strip_tags($request->input('title')),
+        'ingridient' => strip_tags($request->input('ingridient')),
+        'instructions' => strip_tags($request->input('instructions')),
+    ];
+
+    $recepie->update($data);
+    return redirect('/user');
+
+    }
+   
+    public function deleteRecepie(Recepie $recepie){
+        if (auth()->user()->id == $recepie['user_id'] ){
+          $recepie->delete();
+         } 
+         return redirect('/user');
+    }
+    // public function search(Request $request)
+    // {
+    //     $search = $request->search;
+    
+    //     $recepies = Recepie::where(function ($query) use ($search) {
+    //         $query->where('title', 'like', "%$search%")
+    //               ->orWhere('ingridient', "like", "%$search%");
+    //     })->get();
+    
+    //     return view('recepies', compact('recepies', 'search'));
+    // }
+  
+
+public function search(Request $request)
+{
+    $query = $request->input('query');
+
+    $recepies = Recepie::where('title', 'like', '%' . $query . '%')
+        ->orWhere('ingridient', 'like', '%' . $query . '%')
+        ->get();
+
+    return view('recepies', ['recepies' => $recepies, 'query' => $query]);
 }
 
+
+}
 
