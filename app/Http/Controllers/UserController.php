@@ -15,6 +15,7 @@ class UserController extends Controller
         return redirect('/user') ;
     }
 
+
     public function  register (Request $request){
         $data = $request->validate([
             'name'=>['required' , 'min:3','max:10', Rule::unique('users','name')],
@@ -33,10 +34,48 @@ class UserController extends Controller
          'logname'=> 'required',
          'logpassword'=>'required'
         ]);
+
         if(auth()->attempt(['name'=>$data['logname'],'password'=>$data['logpassword']])){
          $request->session()->regenerate();
-       
         }
         return redirect('/user');
+
           }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ // public function  register (Request $request){
+    //     $data = $request->validate([
+    //         'name'=>['required' , 'min:3','max:10', Rule::unique('users','name')],
+    //         'email'=>['required', 'email' , Rule::unique('users','email')],
+    //         'password'=>['required', 'min:8' ,'max:200']
+
+    //     ]);
+    //      $data['password']= bcrypt($data['password']);
+    //  $user =  User::create($data);
+    //  auth()->login($user);
+    //  return redirect('/user');
+    //     // return 'hello world';
+    // }

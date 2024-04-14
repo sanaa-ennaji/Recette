@@ -1,0 +1,42 @@
+#btn{
+    background-color: blue;
+    }   
+    section{
+        background-color: rgb(77, 77, 202);
+     width: 100vw;
+       height: 100vh;
+        background-repeat: no-repeat;
+      
+    }
+    .center{
+        margin-inline: 25rem;
+    }
+    .bg-red-500{
+      height: 100vh;
+      position: fixed
+    }
+
+    /* #btn{
+    background-color: blue;
+    }   
+    section{
+        background-color: rgb(77, 77, 202);
+     width: 100vw;
+       height: 100vh;
+        background-repeat: no-repeat;
+      
+    }
+    .center{
+        margin-inline: 25rem;
+    }
+    .bg-red-500{
+      height: 100vh;
+      position: fixed
+    }
+    #bot{
+    position: absolute;
+    bottom: 1rem;
+    }
+    #margin{
+      margin-right: 5rem;
+    } */

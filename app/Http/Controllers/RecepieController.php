@@ -13,8 +13,7 @@ class RecepieController extends Controller
 {
     public function createrecepie(Request $request)
     {
-        // $data = $request->validate([])
-        $validator = Validator::make($request->all(), [
+         Validator::make($request->all(), [
             'title' => 'required',
             'ingridient' => 'required',
             'instructions' => 'required',
@@ -47,7 +46,6 @@ class RecepieController extends Controller
             return   view('edit-recepie' , ['recepie' => $recepie]);
          }
     
-
     public function updatedRecepies(Recepie $recepie , Request $request){
        if (auth()->user()->id !== $recepie['user_id'] ){
        return('/user');
@@ -55,15 +53,24 @@ class RecepieController extends Controller
 
      $data = $request->validate([
         'title' => 'required',
-        'ingridient' => 'required',
-        'instructions' => 'required',
-        'image_path' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'ingridient' => 'required', 
+        'instructions' => 'required', 
+        'image_path' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
      ]);
+
      $data = [
         'title' => strip_tags($request->input('title')),
         'ingridient' => strip_tags($request->input('ingridient')),
         'instructions' => strip_tags($request->input('instructions')),
-    ];
+        'user_id' => auth()->id(),
+      ];
+
+      if ($request->hasFile('image_path')) {
+        $file = $request->file('image_path');
+        $imageName = time() . '.' . $file->extension();
+        $file->storeAs('public/images', $imageName);
+        $data['image_path'] = $imageName;
+    }
 
     $recepie->update($data);
     return redirect('/user');
@@ -76,19 +83,7 @@ class RecepieController extends Controller
          } 
          return redirect('/user');
     }
-    // public function search(Request $request)
-    // {
-    //     $search = $request->search;
-    
-    //     $recepies = Recepie::where(function ($query) use ($search) {
-    //         $query->where('title', 'like', "%$search%")
-    //               ->orWhere('ingridient', "like", "%$search%");
-    //     })->get();
-    
-    //     return view('recepies', compact('recepies', 'search'));
-    // }
-  
-
+      
 public function search(Request $request)
 {
     $query = $request->input('query');
